@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<p id="location"></p>
+<div class="jumbotron">
+
+    <div class="row">
+        <div class="col-md-7">
+            <p>Current Weather Condition: <span id="csummary"></span></p>
+            <p>Current Temp: <span id="ctemp"></span></p>
+            <p>Current Humidity: <span id="chumidity"></span></p>
+            <p>Current Precipitation: <span id="cprecip"></span></p>
+            <p>Wind Speed : <span id="cwind"></span></p>
+
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(DisplayWeather);
+            }
+            else {
+                alert("This browser does not support Geo Location");
+            }
+        });
+
+        function DisplayWeather(position) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetWeatherData", "Home")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude }),
+                dataType: "json",
+                success: function (response) {      
+                    SetCurrently(response.Currently);                 
+                },
+                error: function (error) { alert(error); }
+            });
+        }
+
+        function SetCurrently(currently) {
+            $("#csummary").text(currently.summary);                                       
+            $("#ctemp").text(currently.temperature);                   
+            $("#cwind").text(currently.windSpeed);
+            $("#chumidity").text(currently.humidity);
+            $("#cprecip").text(currently.precipProbability);                  
+        }
+      
+    </script>
+
+
+}

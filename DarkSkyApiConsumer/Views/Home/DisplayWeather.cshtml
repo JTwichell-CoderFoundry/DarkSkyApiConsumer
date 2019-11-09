@@ -1,0 +1,17 @@
+﻿@model DarkSkyApiConsumer.Models.WeatherViewModel
+
+@{
+    ViewBag.Title = "Dark Skies Data Display";
+}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">@Model.Currently.summary</div>
+            <div class="row">@Model.Currently.temperature</div>
+            <div class="row">@Model.Currently.cloudCover</div>
+            <div class="row">@Model.Currently.dewPoint</div>
+            <div class="row">@Model.Currently.humidity</div>
+            <div class="row">@Model.Currently.precipProbability</div>
+        </div>
+       
+    </div>
